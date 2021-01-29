@@ -6,6 +6,7 @@ victory_screen = 'images/victory.png'
 defeat_screen = 'images/defeat.png'
 campaign_begin_button = 'images/begin_button.png'
 kt_challenge_button = 'images/kt_challenge_button.png'
+level_up = 'images/level_up.png'
 ####
 
 def is_on_screen(target):
@@ -32,7 +33,6 @@ def wait_state():
     Returns 0 if battle was successfuly compelted
     Returns -1 if wait stage stuck for >65 seconds
     """   
-    print("Looking for state transition criteria...")
     time.sleep(2)  #Handles potential lag between screen transitions
 
     for _ in range(13): #Waiting 65 seconds is sufficient for battle to complete
@@ -43,9 +43,10 @@ def wait_state():
             click_state(defeat_screen)
             return 2
         elif is_on_screen(campaign_begin_button):
-            print("Begin button found")
             click_state(campaign_begin_button)
-       
+        elif is_on_screen(level_up):
+            click_state(level_up)
+
         time.sleep(5) 
 
     #Exit with an error code if wait_stage is stuck for >65 seconds
@@ -59,35 +60,39 @@ def identify_start_state():
     Returns 0 if battle was succesffuly completed
     Returns -1 if unable to complete a battle
     """
-    print("#####BATTLE_STATE_START#####")
 
     if is_on_screen(victory_screen):
         click_state(victory_screen)
-        print("Identified victory screen")
         return 0
     elif is_on_screen(defeat_screen):
         click_state(defeat_screen)
-        print("Identified defeat screen")
         return 0
     elif is_on_screen(campaign_begin_button):
         click_state(campaign_begin_button)
-        print("Identified begin button. Entering wait state")
         return wait_state()
     elif is_on_screen(kt_challenge_button):
         click_state(kt_challenge_button)
-        print("Identified challenge button. Entering wait state")
         return wait_state()
 
 
 if __name__ == "__main__":
-    state = identify_start_state()
-    if state == 1:
-        print("Battle won")
-    elif state == 2:
-        print("Battle lost")
-    else:
-        print("Battle state failure")
-    print("#####BATTLE_STATE_END#####") 
+    lost_in_a_row = 0
+    won_last_battle = 1
+
+    print("Starting auto afk...")
+
+    while True:
+        state = identify_start_state()
+
+        #Block provides logic for keeping track of losses between victories
+        if state == 1: #won
+            if won_last_battle == 0: #prevent over-verbose printing
+                print("Completed stage after", lost_in_a_row, "defeats.")
+            won_last_battle = 1
+            lost_in_a_row = 0
+        elif state == 2: #lost
+            lost_in_a_row += 1
+            won_last_battle = 0
 
 
 
