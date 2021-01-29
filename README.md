@@ -28,8 +28,8 @@ To use AutoAfk, simply start up your preferred android emulator (BlueStacks is r
 AutoAfk will continue to retry stages until the application is closed. In addition, if AutoAfk will output a message to the console after passing a difficult stage indicating how many retries it took before a victory. 
 
 ## Dependencies
-- [pyautogui](#pyautogui) 
-- [time](#time) 
+* pyautogui 
+* time
 
 AutoAfk relies on pyautogui to handle on-screen element identification. Pyautogui can be installed by using pip ```pip install pyautogui``` while the time package is included in most versions of Python.
 
