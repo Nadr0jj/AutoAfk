@@ -1,6 +1,6 @@
-
-<img src="readme_image/hero.png" height = "250" width = "750">
-
+<p align="center">
+  <img src="readme_image/hero.png" height = "250" width = "750">
+</p>
 
 ## What is AutoAfk?
 AutoAfk is a tool written in Python which automates stage retrying in both the main campaign mode and King's Tower in the mobile game Afk Arena. It is intended to be run alongside a BlueStacks instance.
